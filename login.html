@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f7f2">
+    <link rel="stylesheet" href="styles.css?v=7">
+    <script src="auth-page.js?v=6" type="module"></script>
+    <title>Sign in | Daybook</title>
+  </head>
+  <body data-account-page="login">
+    <main class="account-shell">
+      <a class="brand account-brand" href="index.html"><span class="brand-mark">d.</span><span>daybook</span></a>
+      <section class="account-card">
+        <p class="eyebrow">WELCOME BACK</p>
+        <h1>Sign in to Daybook</h1>
+        <p class="account-intro">Access your habits, food expenses, and synced profile.</p>
+        <form id="login-form" class="account-form">
+          <label>Email<input id="login-email" type="email" autocomplete="email" required></label>
+          <label>Password<input id="login-password" type="password" autocomplete="current-password" required></label>
+          <button id="reset-password" class="password-reset-link" type="button">Forgot password?</button>
+          <p id="account-error" class="form-error hidden" role="alert"></p>
+          <p id="account-message" class="form-success hidden" role="status"></p>
+          <button id="account-submit" class="button button-dark account-submit" type="submit">Sign in</button>
+        </form>
+        <p class="account-switch">New to Daybook? <a href="register.html">Create an account</a></p>
+        <p id="firebase-setup-note" class="setup-note"></p>
+        <a class="back-link" href="index.html">Continue in local mode</a>
+      </section>
+      <p class="account-footer">Your private daily space for steady habits and mindful spending.</p>
+    </main>
+  </body>
+</html>

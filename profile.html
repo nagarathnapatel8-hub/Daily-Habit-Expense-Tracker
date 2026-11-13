@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f7f2">
+    <link rel="stylesheet" href="styles.css?v=7">
+    <script src="auth-page.js?v=6" type="module"></script>
+    <title>Your profile | Daybook</title>
+  </head>
+  <body data-account-page="profile">
+    <main class="account-shell">
+      <a class="brand account-brand" href="index.html"><span class="brand-mark">d.</span><span>daybook</span></a>
+      <section class="account-card profile-card">
+        <p class="eyebrow">YOUR DAYBOOK ACCOUNT</p>
+        <h1>Your profile</h1>
+        <div class="profile-avatar" id="profile-avatar" aria-hidden="true">D</div>
+        <p id="profile-display-name" class="profile-display-name">Loading profile…</p>
+        <p id="profile-email" class="profile-email"></p>
+        <form id="profile-form" class="account-form">
+          <label>Display name<input id="profile-name" type="text" maxlength="60" autocomplete="name" required></label>
+          <p id="account-error" class="form-error hidden" role="alert"></p>
+          <button id="account-submit" class="button button-dark account-submit" type="submit">Save profile</button>
+        </form>
+        <dl class="profile-details">
+          <div><dt>Account ID</dt><dd id="profile-uid">—</dd></div>
+          <div><dt>Created</dt><dd id="profile-created">—</dd></div>
+        </dl>
+        <p id="firebase-setup-note" class="setup-note"></p>
+        <div class="profile-actions">
+          <a class="button button-outline" href="index.html">Back to Daybook</a>
+          <button id="profile-sign-out" class="button button-outline" type="button" disabled>Sign out</button>
+        </div>
+      </section>
+      <p class="account-footer">Your private daily space for steady habits and mindful spending.</p>
+    </main>
+  </body>
+</html>

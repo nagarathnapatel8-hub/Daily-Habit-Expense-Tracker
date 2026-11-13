@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f7f2">
+    <meta name="description" content="Track daily habits and food spending, online or offline.">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css?v=7">
+    <script src="app.js?v=6" type="module"></script>
+    <title>Daybook | Habits &amp; food expenses</title>
+  </head>
+  <body>
+    <section class="welcome-shell" id="welcome-screen">
+      <a class="brand account-brand" href="index.html"><span class="brand-mark">d.</span><span>daybook</span></a>
+      <section class="welcome-card">
+        <p class="eyebrow">A CALMER DAILY ROUTINE</p>
+        <h1>Your habits and food spending,<br><span>in one simple place.</span></h1>
+        <p class="welcome-copy">Check in on what matters and keep an eye on your food budget.</p>
+        <div class="welcome-actions">
+          <a class="button button-outline" href="login.html">Sign in</a>
+          <a class="button button-dark" href="register.html">Create account</a>
+        </div>
+        <p id="landing-setup-note" class="landing-note">Use an account to sync your tracker, or continue locally on this device.</p>
+        <button id="continue-local" class="local-mode-button" type="button">Continue in local mode <span aria-hidden="true">→</span></button>
+      </section>
+      <p class="account-footer">Private, simple, and focused on your day.</p>
+    </section>
+
+    <main class="app-shell hidden" id="tracker-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Daybook home">
+          <span class="brand-mark" aria-hidden="true">d.</span>
+          <span>daybook</span>
+        </a>
+        <div class="topbar-actions">
+          <span id="connection-state" class="connection-state">Local mode</span>
+          <button id="account-button" class="button button-outline" type="button">Sign in</button>
+          <button id="profile-button" class="button button-outline hidden" type="button">Profile</button>
+          <button id="sign-out-button" class="button button-outline hidden" type="button">Sign out</button>
+          <label class="date-picker">
+            <span class="sr-only">Choose a date</span>
+            <input id="selected-date" type="date">
+            <span class="calendar-icon" aria-hidden="true">▦</span>
+          </label>
+        </div>
+      </header>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-button active" type="button" data-view="dashboard">Overview</button>
+        <button class="nav-button" type="button" data-view="calendar">Calendar</button>
+        <button class="nav-button" type="button" data-view="insights">Insights</button>
+      </nav>
+
+      <section class="welcome">
+        <div>
+          <p class="eyebrow" id="today-label">YOUR DAILY CHECK-IN</p>
+          <h1>Today at a glance</h1>
+          <p class="welcome-copy">Your habits and food spending, all in one place.</p>
+        </div>
+      </section>
+
+      <section class="view-panel active" id="dashboard-view" aria-label="Overview">
+        <section class="summary-grid" aria-label="Daily summary">
+          <article class="summary-card habit-summary">
+            <div class="summary-heading"><span class="summary-icon">✓</span><span>Habits done</span></div>
+            <p class="summary-value"><span id="habits-done">0</span><span class="summary-total"> / <span id="habits-total">0</span></span></p>
+            <p class="summary-foot" id="habit-summary-note">Start with one small win</p>
+          </article>
+          <article class="summary-card spend-summary">
+            <div class="summary-heading"><span class="summary-icon">₹</span><span>Food spend today</span></div>
+            <p class="summary-value" id="today-spend">₹0.00</p>
+            <p class="summary-foot">For the selected day</p>
+          </article>
+          <article class="summary-card score-summary">
+            <div class="summary-heading"><span class="summary-icon">✦</span><span>Spending score</span></div>
+            <p class="summary-value"><span id="spending-score">—</span><span class="score-out-of" id="score-out-of"></span></p>
+            <p class="summary-foot" id="score-note">Set a monthly budget to begin</p>
+          </article>
+        </section>
+
+        <section class="budget-strip">
+          <div class="budget-copy">
+            <span class="budget-icon" aria-hidden="true">◎</span>
+            <div><strong>Monthly food budget</strong><span id="budget-progress-label">Set a budget and keep your spending on track.</span></div>
+          </div>
+          <form id="budget-form" class="budget-form">
+            <label class="sr-only" for="budget-amount">Monthly budget in rupees</label>
+            <span class="currency-prefix">₹</span>
+            <input id="budget-amount" type="number" min="1" step="1" placeholder="Set amount" required>
+            <button type="submit" class="button button-dark">Save budget</button>
+            <button id="clear-budget" type="button" class="link-button hidden">Remove budget</button>
+          </form>
+        </section>
+        <p id="budget-alert" class="budget-alert hidden" role="status"></p>
+
+        <div class="content-grid">
+          <section class="panel habits-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">SHOW UP FOR YOURSELF</p><h2>Daily habits <span class="heading-sparkle">✳</span></h2></div>
+              <span class="panel-count" id="habit-count">0 habits</span>
+            </div>
+            <form id="habit-form" class="inline-form">
+              <label class="sr-only" for="habit-name">New habit name</label>
+              <input id="habit-name" name="name" type="text" maxlength="60" placeholder="Add a habit (e.g. Morning walk)" required>
+              <label class="sr-only" for="habit-category">Habit category</label>
+              <select id="habit-category" name="category">
+                <option>Health</option>
+                <option>Fitness</option>
+                <option>Mindfulness</option>
+                <option>Learning</option>
+                <option>Personal care</option>
+                <option>Home</option>
+                <option>Other</option>
+              </select>
+              <button class="button button-dark" type="submit">Add habit <span aria-hidden="true">+</span></button>
+            </form>
+            <ul id="habit-list" class="habit-list"></ul>
+            <div class="empty-state" id="habit-empty"><span class="empty-icon" aria-hidden="true">✳</span><p>No habits yet. Add one small thing you want to do today.</p></div>
+          </section>
+
+          <section class="panel expense-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">SPEND WITH AWARENESS</p><h2>Food expenses <span class="heading-sparkle expense-sparkle">↗</span></h2></div>
+              <span class="panel-count" id="expense-count">0 entries</span>
+            </div>
+            <form id="expense-form" class="expense-form">
+              <label><span>What was it?</span><input id="expense-note" name="note" type="text" maxlength="80" placeholder="e.g. Lunch with friends" required></label>
+              <div class="form-row">
+                <label><span>Category</span><select id="expense-category" name="category"><option>Groceries</option><option>Dining out</option><option>Coffee &amp; snacks</option><option>Delivery</option><option>Other</option></select></label>
+                <label><span>Amount (₹)</span><input id="expense-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required></label>
+              </div>
+              <button class="button button-green expense-submit" type="submit">Add expense <span aria-hidden="true">+</span></button>
+            </form>
+            <div class="expense-list-heading"><span>Entries for this day</span><span id="expense-day-total">₹0.00</span></div>
+            <ul id="expense-list" class="expense-list"></ul>
+            <div class="empty-state expense-empty" id="expense-empty"><span class="empty-icon" aria-hidden="true">₹</span><p>No food expenses for this day.</p></div>
+          </section>
+        </div>
+
+      </section>
+
+      <section class="view-panel" id="calendar-view" aria-label="Calendar">
+        <section class="panel calendar-panel">
+          <div class="panel-heading calendar-heading">
+            <div><p class="eyebrow">YOUR HABITS &amp; FOOD SPENDING</p><h2 id="calendar-title">Monthly calendar</h2></div>
+            <div class="calendar-controls"><button class="icon-button" id="previous-month" type="button" aria-label="Previous month">‹</button><button class="icon-button" id="next-month" type="button" aria-label="Next month">›</button></div>
+          </div>
+          <div class="calendar-weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+          <div id="calendar-grid" class="calendar-grid"></div>
+          <div class="calendar-legend"><span><i class="legend-habit"></i>Habit complete</span><span><i class="legend-expense"></i>Expense logged</span></div>
+          <p id="calendar-help" class="subtle-copy">Choose a day to see its check-ins and expenses.</p>
+        </section>
+      </section>
+
+      <section class="view-panel" id="insights-view" aria-label="Insights">
+        <section class="summary-grid insight-summary">
+          <article class="summary-card month-summary"><div class="summary-heading"><span class="summary-icon">₹</span><span>Spent this month</span></div><p class="summary-value" id="month-spend">₹0.00</p><p class="summary-foot" id="month-label">Month to date</p></article>
+          <article class="summary-card forecast-summary"><div class="summary-heading"><span class="summary-icon">↗</span><span>Month-end prediction</span></div><p class="summary-value" id="spend-prediction">₹0.00</p><p class="summary-foot" id="prediction-note">Based on spending so far</p></article>
+          <article class="summary-card streak-summary"><div class="summary-heading"><span class="summary-icon">🔥</span><span>Best current streak</span></div><p class="summary-value" id="best-streak">0 days</p><p class="summary-foot">Across your habits</p></article>
+        </section>
+        <div class="insights-grid">
+          <section class="panel weekly-report-panel"><div class="panel-heading"><div><p class="eyebrow">MONDAY TO SUNDAY</p><h2>Weekly report</h2></div><span class="panel-count" id="weekly-range"></span></div><div id="weekly-report" class="weekly-report"></div></section>
+          <section class="panel"><div class="panel-heading"><div><p class="eyebrow">WHERE YOUR FOOD BUDGET GOES</p><h2>Food category analysis</h2></div></div><div id="category-analysis" class="category-analysis"></div></section>
+          <section class="panel"><div class="panel-heading"><div><p class="eyebrow">HABIT CHECK-INS BY TYPE</p><h2>Habit category analysis</h2></div></div><div id="habit-category-analysis" class="category-analysis"></div></section>
+          <section class="panel"><div class="panel-heading"><div><p class="eyebrow">SMALL PATTERNS, USEFUL CLUES</p><h2>Habit &amp; spending relationship</h2></div></div><div id="relationship-analysis" class="insight-copy"></div></section>
+          <section class="panel monthly-summary-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR MONTH IN A NUTSHELL</p><h2>Smart monthly summary</h2></div></div><div id="monthly-summary" class="insight-copy"></div></section>
+        </div>
+        <section class="panel achievements-panel">
+          <div class="panel-heading"><div><p class="eyebrow">KEEP GOING, YOU'RE GROWING</p><h2>Achievements</h2></div><span class="panel-count" id="badge-count">0 earned</span></div>
+          <div id="badge-list" class="badge-list"></div>
+        </section>
+        <p class="disclaimer">Predictions and relationship insights are simple estimates from your entries, not financial or health advice. A pattern does not prove that one thing caused another.</p>
+      </section>
+
+      <footer class="footer-note">Your data stays on this device in local mode. Be kind to your future self. <span aria-hidden="true">♥</span></footer>
+    </main>
+
+    <div id="status-message" class="sr-only" role="status" aria-live="polite"></div>
+  </body>
+</html>
